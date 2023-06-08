@@ -20,6 +20,19 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
+
+  if(data && data.length) {
+    data.sort((a, b) => { 
+      let splitA = a.date.split("-");
+      let splitB = b.date.split("-");
+      console.log(splitA)
+      console.log(splitB)
+      let dateA = new Date(splitA[0], splitA[1], splitA[2]);
+      let dateB = new Date(splitB[0], splitB[1], splitB[2]);
+      return dateB.getTime() - dateA.getTime()
+    })
+  }
+
   return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
 }
 
