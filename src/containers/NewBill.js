@@ -17,10 +17,17 @@ export default class NewBill {
   }
   handleChangeFile = e => {
     e.preventDefault()
+
+    console.log('handleChangeFile est appelée')
+
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    console.log('Fichier:', file)
     const filePath = e.target.value.split(/\\/g)
+    console.log('Chemin du fichier:', e.target.value)
     const fileName = filePath[filePath.length-1]
+    console.log('Nom du fichier:', fileName)
     const fileExtension = fileName.split('.').pop()
+    console.log('Extension du fichier:', fileExtension)
 
   // Vérifiez si l'extension de fichier est valide
     const validExtensions = ['jpg', 'jpeg', 'png']
