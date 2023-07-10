@@ -17,8 +17,6 @@ export default class NewBill {
   }
   handleChangeFile = e => {
     e.preventDefault()
-
-
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
@@ -71,7 +69,7 @@ export default class NewBill {
   // not need to cover this function by tests
   updateBill = (bill) => {
     if (this.store) {
-      this.store
+      return this.store
       .bills()
       .update({data: JSON.stringify(bill), selector: this.billId})
       .then(() => {
