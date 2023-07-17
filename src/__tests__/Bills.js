@@ -83,6 +83,19 @@ describe("Given I am connected as an employee", () => {
       btnNewBill.click()
       expect(onNavigate).toHaveBeenCalledWith(ROUTES_PATH['NewBill'])
     })
+
+    test("Then it fails with a 404 message error", async() => {
+      const html = BillsUI({ error: 'Erreur 404' })
+      document.body.innerHTML = html;
+      const message = await screen.getByText(/Erreur 404/);
+      expect(message).toBeTruthy();
+    })
+    test("Then it fails with a 500 message error", async() => {
+      const html = BillsUI({ error: 'Erreur 500' })
+      document.body.innerHTML = html;
+      const message = await screen.getByText(/Erreur 500/);
+      expect(message).toBeTruthy();
+    })
   })
 
   describe("Quand je clique sur l'icone œil pour voir une facture", () => {
