@@ -53,6 +53,7 @@ export default class {
               }
             }
           })
+          console.log(bills.lenght)
         return bills
       })
       .catch(error => {throw error})
