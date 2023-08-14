@@ -25,13 +25,29 @@ describe("Given I am connected as an employee", () => {
       const windowIcon = screen.getByTestId('icon-window')
       expect(screen.getByTestId('icon-window').classList.contains('active-icon')).toBe(true) // ajout pour vérifier le test de surbrillance
     })
-    test("Then bills should be ordered from earliest to latest", () => {
-      document.body.innerHTML = BillsUI({ data: bills })
-      const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
-      const antiChrono = (a, b) => ((a < b) ? 1 : -1)
-      const datesSorted = [...dates].sort(antiChrono)
-      expect(dates).toEqual(datesSorted)
+
+    test("Then bills should be ordered from earliest to latest", async() => {
+      const pureBills = await mockedBills.bills().list();
+      const orderedPureBills = pureBills.sort((a, b) => a.date < b.date ? -1 : 1);
+      const orderedPureBillsName = Object.values(orderedPureBills.map(bill => bill.name));
+
+      const billsContainer = new Bills({
+        document: document,
+        onNavigate: onNavigate,
+        store: mockedBills,
+        localStorage: window.localStorage
+      })
+
+      const treatedBills = await billsContainer.getBills();
+      document.body.innerHTML = BillsUI({data: treatedBills});
+
+      const renderedBillsNames = screen.getAllByTestId('bill-row-name').map(billItemNameElement => billItemNameElement.textContent);
+
+      expect(renderedBillsNames).toEqual(orderedPureBillsName);
+
     })
+
+    
     test('Function handleClickNewBill should be called', () => { // ajout test pour vérifier l'appel de la fonction handleClickNewBill
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       window.localStorage.setItem('user', JSON.stringify({

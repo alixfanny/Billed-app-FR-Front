@@ -8,7 +8,7 @@ const row = (bill) => {
   return (`
     <tr>
       <td>${bill.type}</td>
-      <td>${bill.name}</td>
+      <td data-testid="bill-row-name">${bill.name}</td>
       <td>${bill.date}</td>
       <td>${bill.amount} €</td>
       <td>${bill.status}</td>
@@ -20,17 +20,6 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-
-  if(data && data.length) {
-    data.sort((a, b) => { 
-      let splitA = a.date.split("-");
-      let splitB = b.date.split("-");
-      let dateA = new Date(splitA[0], splitA[1], splitA[2]);
-      let dateB = new Date(splitB[0], splitB[1], splitB[2]);
-      return dateB.getTime() - dateA.getTime()
-    })
-  }
-
   return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
 }
 
@@ -73,7 +62,7 @@ export default ({ data: bills, loading, error }) => {
               <tr>
                 <th>Type</th>
                 <th>Nom</th>
-                <th data-testid="date">Date</th>
+                <th>Date</th>
                 <th>Montant</th>
                 <th>Statut</th>
                 <th>Actions</th>
